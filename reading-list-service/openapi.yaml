@@ -53,9 +53,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorPayload'
-  /show/{movieId}/{locationId}/{timeId}:
+  /show/{movieId}/{locationId}/{timeId}/{dateSelected}:
     get:
-      operationId: getShowMovieidLocationidTimeid
+      operationId: getShowMovieidLocationidTimeidDateselected
       parameters:
       - name: movieId
         in: path
@@ -68,6 +68,11 @@ paths:
         schema:
           type: string
       - name: timeId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: dateSelected
         in: path
         required: true
         schema:
