@@ -17,9 +17,9 @@ tags:
   - name: books
     description: In-memory book list cache API
 paths:
-  /users:
+  /movies:
     get:
-      operationId: getUsers
+      operationId: getMovies
       responses:
         "200":
           description: Ok
@@ -28,27 +28,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/User'
-        "500":
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorPayload'
-    post:
-      operationId: postUsers
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-      responses:
-        "201":
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
+                  $ref: '#/components/schemas/Movie'
         "500":
           description: Internal server error
           content:
@@ -79,8 +59,51 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorPayload'
+  /users:
+    post:
+      operationId: postUsers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorPayload'
 components:
   schemas:
+    Movie:
+      required:
+      - description_text
+      - end_date
+      - id
+      - image
+      - movie_name
+      - start_date
+      type: object
+      properties:
+        id:
+          type: string
+        movie_name:
+          type: string
+        description_text:
+          type: string
+        image:
+          type: string
+        start_date:
+          type: string
+        end_date:
+          type: string
     ErrorPayload:
       type: object
       properties:

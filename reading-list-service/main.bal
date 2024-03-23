@@ -17,6 +17,15 @@ type User record {|
     string user_name;
 |};
 
+type Movie record {|
+    string id;
+    string movie_name;
+    string description_text;
+    string image;
+    string  start_date;
+    string end_date;
+|};
+
 service / on new http:Listener(8080) {
     private final mysql:Client db;
 
@@ -24,10 +33,10 @@ service / on new http:Listener(8080) {
         self.db = check new (host, user_name_db, password, database, port);
     }
 
-    resource function get users() returns User[]|error {
+    resource function get movies() returns Movie[]|error {
 
-        stream<User, sql:Error?> userStream = self.db->query(`SELECT * FROM Users`);
-        return from User user in userStream select user;
+        stream<Movie, sql:Error?> movieStream = self.db->query(`SELECT * FROM Movie`);
+        return from Movie movie in movieStream select movie;
     }
 
     resource function get users/[string id]() returns User|http:NotFound|error {
