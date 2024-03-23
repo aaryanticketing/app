@@ -74,8 +74,10 @@ service / on new http:Listener(8080) {
         }
 
         _ = check self.db->execute(`
-            UPSERT INTO shows (id, movie_id, date_selected, time_id, seats_left, location_id) 
-            VALUES(${show.id}, ${show.movie_id}, ${show.date_selected}, ${show.time_id}, ${show.seats_left}, ${show.location_id});`);
+           INSERT INTO shows (id, movie_id, date_selected, time_id, seats_left, location_id)
+            VALUES(${show.id}, ${show.movie_id}, ${show.date_selected}, ${show.time_id}, ${show.seats_left}, ${show.location_id})
+            ON DUPLICATE KEY UPDATE movie_id=${show.movie_id}, date_selected=${show.date_selected},
+            time_id=${show.time_id}, seats_left=${show.seats_left}, location_id=${show.location_id};`);
         return show;
     }
 }
