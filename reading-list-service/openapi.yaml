@@ -17,140 +17,105 @@ tags:
   - name: books
     description: In-memory book list cache API
 paths:
-  /books:
-    summary: List all books
+  /users:
     get:
-      summary: List all books
-      operationId: ListAllBooks
-      tags:
-        - books
+      operationId: getUsers
       responses:
         "200":
-          description: Successful operation
+          description: Ok
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/StringArray"
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorPayload'
     post:
-      summary: Insert a new book
-      operationId: SetNewBook
-      responses:
-        "200":
-          description: Successful operation
-        "400":
-          description: Invalid request body
-      tags:
-        - books
+      operationId: postUsers
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/KeyValue"
-
-  /books/{uuid}:
-    summary: Get book by UUID
-    get:
-      tags:
-        - books
-      summary: Get book by UUID
-      operationId: GetBookByUUID
-      parameters:
-        - name: uuid
-          in: path
-          description: UUID of book to return
-          required: true
-          schema:
-            type: string
+              $ref: '#/components/schemas/User'
       responses:
-        "200":
-          description: Successful operation
+        "201":
+          description: Created
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/KeyValue"
-        "404":
-          description: UUID not found
-    delete:
-      tags:
-        - books
-      summary: Delete book by UUID
-      description: Deletes a single book based on the UUID supplied
-      operationId: DeleteBookByUUID
-      parameters:
-        - name: uuid
-          in: path
-          description: UUID of book to delete
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Successful operation
-        "404":
-          description: ISBN not found
-    put:
-      tags:
-        - books
-      summary: Update book status by UUID
-      description: Updates the status of the book based on the UUID supplied
-      operationId: UpdateBookStatusByUUID
-      parameters:
-        - name: uuid
-          in: path
-          description: UUID of book to update
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Successful operation
-        "404":
-          description: UUID not found
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Status"
-  /healthz:
-    summary: Healthcheck endpoint
+                $ref: '#/components/schemas/User'
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorPayload'
+  /users/{id}:
     get:
-      summary: Healthcheck
-      operationId: Healthcheck
+      operationId: getUsersId
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
         "200":
-          description: Healthy response
-
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "404":
+          description: NotFound
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorPayload'
 components:
   schemas:
-    Key:
+    ErrorPayload:
       type: object
       properties:
-        uuid:
+        reason:
           type: string
-          example: "my-uuid"
-    Status:
-      type: object
-      properties:
+          description: Reason phrase
+        path:
+          type: string
+          description: Request path
+        method:
+          type: string
+          description: Method type of the request
+        message:
+          type: string
+          description: Error message
+        timestamp:
+          type: string
+          description: Timestamp of the error
         status:
-          type: string
-          example: "read"
-    KeyValue:
-      type: object
+          type: integer
+          description: Relevant HTTP status code
+          format: int32
+    User:
       required:
-        - title
-        - author
-        - status
+      - email
+      - id
+      - user_name
+      - user_type
+      type: object
       properties:
-        title:
+        email:
           type: string
-          example: "my-title"
-        author:
+        user_type:
           type: string
-          example: "my-author"
-        status:
+        id:
           type: string
-          example: "read"
-    StringArray:
-      type: array
-      items:
-        type: string
+        user_name:
+          type: string
