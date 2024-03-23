@@ -113,15 +113,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorPayload'
-  /ticket/{email}:
+  /ticket:
     post:
-      operationId: postTicketEmail
-      parameters:
-      - name: email
-        in: path
-        required: true
-        schema:
-          type: string
+      operationId: postTicket
       requestBody:
         content:
           application/json:

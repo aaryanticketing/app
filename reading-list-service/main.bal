@@ -83,7 +83,7 @@ service / on new http:Listener(8080) {
         return show;
     }
 
-    resource function post ticket/[string email](@http:Payload Ticket ticket) returns Ticket|error {
+    resource function post ticket(@http:Payload Ticket ticket) returns Ticket|error {
         string uuid1 = uuid:createType1AsString();
         ticket.id = uuid1;    
         _ = check self.db->execute(`
