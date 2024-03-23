@@ -67,12 +67,15 @@ service / on new http:Listener(8080) {
         return from Show show in showStream select show;
     }
 
-    resource function post users(@http:Payload User user) returns User|error {
-        string uuid1 = uuid:createType1AsString();
-        user.id = uuid1;
+    resource function put show(@http:Payload Show show) returns Show|error {
+        if show.id == "" {
+            string uuid1 = uuid:createType1AsString();
+            show.id = uuid1;    
+        }
+
         _ = check self.db->execute(`
-            INSERT INTO Users (id, user_type, email, user_name)
-            VALUES (${user.id}, ${user.user_type}, ${user.email}, ${user.user_name});`);
-        return user;
+            UPSERT INTO shows (id, movie_id, date_selected, time_id, seats_left, location_id) 
+            VALUES(${show.id}, ${show.movie_id}, DATE ${show.date_selected}, ${show.time_id}, ${show.seats_left}, ${show.location_id});`);
+        return show;
     }
 }

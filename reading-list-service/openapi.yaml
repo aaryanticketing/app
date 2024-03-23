@@ -92,21 +92,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorPayload'
-  /users:
-    post:
-      operationId: postUsers
+  /show:
+    put:
+      operationId: putShow
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/Show'
       responses:
-        "201":
-          description: Created
+        "200":
+          description: Ok
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/Show'
         "500":
           description: Internal server error
           content:
@@ -180,22 +180,6 @@ components:
         address:
           type: string
         seats:
-          type: string
-    User:
-      required:
-      - email
-      - id
-      - user_name
-      - user_type
-      type: object
-      properties:
-        email:
-          type: string
-        user_type:
-          type: string
-        id:
-          type: string
-        user_name:
           type: string
     Show:
       required:
