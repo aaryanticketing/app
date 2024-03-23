@@ -113,6 +113,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorPayload'
+  /ticket/{email}:
+    post:
+      operationId: postTicketEmail
+      parameters:
+      - name: email
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ticket'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ticket'
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorPayload'
 components:
   schemas:
     Movie:
@@ -136,6 +163,28 @@ components:
         start_date:
           type: string
         end_date:
+          type: string
+    Ticket:
+      required:
+      - amount
+      - id
+      - movie_id
+      - qty
+      - show_id
+      - user_id
+      type: object
+      properties:
+        id:
+          type: string
+        user_id:
+          type: string
+        show_id:
+          type: string
+        qty:
+          type: string
+        movie_id:
+          type: string
+        amount:
           type: string
     ErrorPayload:
       type: object

@@ -10,13 +10,6 @@ configurable string user_name_db = ?;
 configurable string password = ?;
 configurable string database = ?;
 
-type User record {|
-    string email;
-    string user_type;
-    string id;
-    string user_name;
-|};
-
 type Movie record {|
     string id;
     string movie_name;
@@ -42,6 +35,15 @@ type Show record {|
     string time_id;
     string seats_left;
     string location_id;
+|};
+
+type Ticket record {|
+    string id;
+    string user_id;
+    string show_id;
+    string qty;
+    string movie_id;
+    string amount;
 |};
 
 service / on new http:Listener(8080) {
@@ -79,5 +81,14 @@ service / on new http:Listener(8080) {
             ON DUPLICATE KEY UPDATE movie_id=${show.movie_id}, date_selected=${show.date_selected},
             time_id=${show.time_id}, seats_left=${show.seats_left}, location_id=${show.location_id};`);
         return show;
+    }
+
+    resource function post ticket/[string email](@http:Payload Ticket ticket) returns Ticket|error {
+        string uuid1 = uuid:createType1AsString();
+        ticket.id = uuid1;    
+        _ = check self.db->execute(`
+           INSERT INTO shows (id, user_id, show_id, qty, movie_id, amount)
+            VALUES(${ticket.id}, ${ticket.user_id}, ${ticket.show_id}, ${ticket.qty}, ${ticket.movie_id}, ${ticket.amount});`);
+        return ticket;
     }
 }
