@@ -31,7 +31,7 @@ type LocationTime record {|
     string time_id;
     string times;
     string loc_name;
-    string  address;
+    string address;
     string seats;
 |};
 
