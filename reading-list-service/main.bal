@@ -48,7 +48,7 @@ service / on new http:Listener(8080) {
         return from Movie movie in movieStream select movie;
     }
 
-    resource function get locationTimes/[string id]() returns User|http:NotFound|error {
+    resource function get locationTimes() returns LocationTime[]|error {
         stream<LocationTime, sql:Error?> locationTimeStream = self.db->query(`SELECT location.id as location_id, times.id as time_id, times.times as times, location.loc_name, location.address, location.seats FROM location LEFT JOIN times ON location.time_id = times.id`);
         return from LocationTime locationTime in locationTimeStream select locationTime;
     }
