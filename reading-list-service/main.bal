@@ -75,7 +75,7 @@ service / on new http:Listener(8080) {
 
         _ = check self.db->execute(`
             UPSERT INTO shows (id, movie_id, date_selected, time_id, seats_left, location_id) 
-            VALUES(${show.id}, ${show.movie_id}, DATE ${show.date_selected}, ${show.time_id}, ${show.seats_left}, ${show.location_id});`);
+            VALUES(${show.id}, ${show.movie_id}, ${show.date_selected}, ${show.time_id}, ${show.seats_left}, ${show.location_id});`);
         return show;
     }
 }
