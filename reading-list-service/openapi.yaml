@@ -53,15 +53,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorPayload'
-  /show:
+  /show/{movieId}/{dateSelected}/{locationId}/{timeId}:
     get:
-      operationId: getShow
+      operationId: getShowMovieidDateselectedLocationidTimeid
       parameters:
-      - name: req
-        in: query
+      - name: movieId
+        in: path
         required: true
         schema:
-          $ref: '#/components/schemas/Show'
+          type: string
+      - name: dateSelected
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: locationId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: timeId
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
         "200":
           description: Ok

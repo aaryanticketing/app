@@ -62,8 +62,8 @@ service / on new http:Listener(8080) {
         return from LocationTime locationTime in locationTimeStream select locationTime;
     }
 
-    resource function get show(Show req) returns Show[]|error {
-        stream<Show, sql:Error?> showStream = self.db->query(`SELECT * FROM shows where movie_id = ${req.movie_id} AND date_selected = ${req.date_selected} AND location_id = ${req.location_id} AND time_id = ${req.time_id}`);
+    resource function get show/[string movieId]/[string dateSelected]/[string locationId]/[string timeId]() returns Show[]|error {
+        stream<Show, sql:Error?> showStream = self.db->query(`SELECT * FROM shows where movie_id = ${movieId} AND date_selected = ${dateSelected} AND location_id = ${locationId} AND time_id = ${timeId}`);
         return from Show show in showStream select show;
     }
 
