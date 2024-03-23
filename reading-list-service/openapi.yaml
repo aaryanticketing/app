@@ -35,9 +35,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorPayload'
-  /users/{id}:
+  /locationTimes/{id}:
     get:
-      operationId: getUsersId
+      operationId: getLocationtimesId
       parameters:
       - name: id
         in: path

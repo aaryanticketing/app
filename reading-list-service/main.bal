@@ -26,6 +26,15 @@ type Movie record {|
     string end_date;
 |};
 
+type LocationTime record {|
+    string location_id;
+    string time_id;
+    string times;
+    string loc_name;
+    string  address;
+    string seats;
+|};
+
 service / on new http:Listener(8080) {
     private final mysql:Client db;
 
@@ -39,13 +48,9 @@ service / on new http:Listener(8080) {
         return from Movie movie in movieStream select movie;
     }
 
-    resource function get users/[string id]() returns User|http:NotFound|error {
-        User|sql:Error result = self.db->queryRow(`SELECT * FROM Users WHERE id = ${id}`);
-        if result is sql:NoRowsError {
-            return http:NOT_FOUND;
-        } else {
-            return result;
-        }
+    resource function get locationTimes/[string id]() returns User|http:NotFound|error {
+        stream<LocationTime, sql:Error?> locationTimeStream = self.db->query(`SELECT location.id as location_id, times.id as time_id, times.times as times, location.loc_name, location.address, location.seats FROM location LEFT JOIN times ON location.time_id = times.id`);
+        return from LocationTime locationTime in locationTimeStream select locationTime;
     }
 
     resource function post users(@http:Payload User user) returns User|error {
