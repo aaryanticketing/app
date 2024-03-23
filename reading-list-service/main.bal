@@ -22,7 +22,7 @@ type Movie record {|
     string movie_name;
     string description_text;
     string image;
-    string  start_date;
+    string start_date;
     string end_date;
 |};
 
@@ -33,6 +33,15 @@ type LocationTime record {|
     string loc_name;
     string address;
     string seats;
+|};
+
+type Show record {|
+    string id;
+    string movie_id;
+    string date_selected;
+    string time_id;
+    string seats_left;
+    string location_id;
 |};
 
 service / on new http:Listener(8080) {
@@ -51,6 +60,11 @@ service / on new http:Listener(8080) {
     resource function get locationTimes() returns LocationTime[]|error {
         stream<LocationTime, sql:Error?> locationTimeStream = self.db->query(`SELECT location.id as location_id, times.id as time_id, times.times as times, location.loc_name, location.address, location.seats FROM location LEFT JOIN times ON location.time_id = times.id`);
         return from LocationTime locationTime in locationTimeStream select locationTime;
+    }
+
+    resource function get show(Show req) returns Show[]|error {
+        stream<Show, sql:Error?> showStream = self.db->query(`SELECT * FROM shows where movie_id = ${req.movie_id} AND date_selected = ${req.date_selected} AND location_id = ${req.location_id} AND time_id = ${req.time_id}`);
+        return from Show show in showStream select show;
     }
 
     resource function post users(@http:Payload User user) returns User|error {

@@ -53,6 +53,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorPayload'
+  /show:
+    get:
+      operationId: getShow
+      parameters:
+      - name: req
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Show'
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Show'
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorPayload'
   /users:
     post:
       operationId: postUsers
@@ -157,4 +181,26 @@ components:
         id:
           type: string
         user_name:
+          type: string
+    Show:
+      required:
+      - date_selected
+      - id
+      - location_id
+      - movie_id
+      - seats_left
+      - time_id
+      type: object
+      properties:
+        id:
+          type: string
+        movie_id:
+          type: string
+        date_selected:
+          type: string
+        time_id:
+          type: string
+        seats_left:
+          type: string
+        location_id:
           type: string
