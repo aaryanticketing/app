@@ -87,7 +87,7 @@ service / on new http:Listener(8080) {
         string uuid1 = uuid:createType1AsString();
         ticket.id = uuid1;    
         _ = check self.db->execute(`
-           INSERT INTO shows (id, user_id, show_id, qty, movie_id, amount)
+           INSERT INTO ticket (id, user_id, show_id, qty, movie_id, amount)
             VALUES(${ticket.id}, ${ticket.user_id}, ${ticket.show_id}, ${ticket.qty}, ${ticket.movie_id}, ${ticket.amount});`);
         return ticket;
     }
