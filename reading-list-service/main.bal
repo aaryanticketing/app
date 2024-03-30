@@ -46,6 +46,16 @@ type Ticket record {|
     string amount;
 |};
 
+
+@http:ServiceConfig {
+    cors: {
+        allowOrigins: ["*"],
+        allowCredentials: false,
+        allowHeaders: ["CORELATION_ID"],
+        exposeHeaders: ["X-CUSTOM-HEADER"],
+        maxAge: 84900
+    }
+}
 service / on new http:Listener(8080) {
     private final mysql:Client db;
 
