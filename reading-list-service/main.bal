@@ -50,8 +50,9 @@ type Ticket record {|
 @http:ServiceConfig {
     cors: {
         allowOrigins: ["*"],
+        allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         allowCredentials: false,
-        allowHeaders: ["CORELATION_ID"],
+        allowHeaders: ["authorization","Access-Control-Allow-Origin","Content-Type","SOAPAction","apikey","Internal-Key"],
         exposeHeaders: ["X-CUSTOM-HEADER"],
         maxAge: 84900
     }
