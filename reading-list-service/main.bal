@@ -17,6 +17,7 @@ type Movie record {|
     string image;
     string start_date;
     string end_date;
+    string amount;
 |};
 
 type LocationTime record {|
